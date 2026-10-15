@@ -18,6 +18,8 @@ struct pcStation
     int minutesLeft;
 };
 
+void pcDashboard(const vector<pcStation>& pcs, const vector<account>& accounts);
+
 
 int main()
 {
@@ -47,14 +49,22 @@ int main()
         cout << "Enter your choice: ";
         cin >> choice;
 
-        /*
-        Switch(){
+        
+        switch(choice){
+            case 1:
+                pcDashboard(pcs, accounts);
+            break;
 
+            default:
+                cout << "Error: Choice is out of bounds" << endl;
         }
-        */
+        
 
     }while(choice != 0);
 
     return 0;
 }
 
+void pcDashboard(const vector<pcStation>& pcs, const vector<account>& accounts){
+    
+}

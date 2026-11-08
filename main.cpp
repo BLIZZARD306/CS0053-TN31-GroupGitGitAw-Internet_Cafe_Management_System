@@ -44,7 +44,7 @@ int main()
         cout << setw(40) << "" << endl;
         
         displayDashboard(pcs);
-
+        
         cout << "[1] Open PC Session\n";
         cout << "[2] Extend PC Time\n";
         cout << "[3] End PC Session\n";
@@ -84,7 +84,7 @@ int main()
 
 void displayDashboard(const vector<pcStation>& pcs){
     cout << "\n--- PC STATIONS STATUS ---\n";
-    cout << left << setw(8) << "PC ID" << setw(14) << "Status" << setw(18) << "Current User" << "Time Left\n";
+    cout << left << setw(8) << setfill(' ')<< "PC ID" << setw(14) << "Status" << setw(18) << "Current User" << "Time Left\n";
     cout << "-------------------------------------------------\n";
     for (const auto& pc : pcs) {
         cout << "PC " << left << setw(5) << pc.id 
@@ -96,4 +96,5 @@ void displayDashboard(const vector<pcStation>& pcs){
             cout << "-\n";
         }
     }
+     cout << "-------------------------------------------------\n";
 }

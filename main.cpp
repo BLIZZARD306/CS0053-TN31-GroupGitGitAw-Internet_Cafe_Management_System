@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include "session.h"
 
 using namespace std;
 
@@ -9,15 +10,6 @@ struct account
     string username;
     string pin;
 };
-
-struct pcStation
-{
-    int id;
-    string status;
-    string currentUser;
-    int minutesLeft;
-};
-
 
 int main()
 {

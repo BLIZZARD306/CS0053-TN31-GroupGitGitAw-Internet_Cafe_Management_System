@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+using namespace std;
 
 struct pcStation
 {
@@ -12,5 +13,8 @@ struct pcStation
     string currentUser;
     int minutesLeft;
 };
+
+void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts);
+void endSession(vector<pcStation>& pcs);
 
 #endif

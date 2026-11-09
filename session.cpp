@@ -1,0 +1,124 @@
+#include <iostream>
+#include <cctype>
+#include <string>
+#include <stdexcept>
+#include "session.h"
+using namespace std;
+
+void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts) {
+    int pcId, mins = 0, accountChoice;
+    string pcIdStr, userName, aChoiceStr, minsStr, contSession, finalConfirm;
+
+    while (true) {
+        // ID handling and validation
+        cout << "+====== Open PC Session ======+" << endl;
+        cout << "Enter PC ID to open session (1-4): ";
+        cin >> pcIdStr;
+
+        try {
+            pcId = stoi(pcIdStr);
+
+            if (pcId < 1 || pcId > 4) {
+                cout << "Invalid PC ID. Please choose between 1 and 4." << endl;
+                continue;
+            }
+
+        } catch (const invalid_argument&) {
+            cout << "Please Enter a Valid PC ID." << endl;
+            continue;
+        }
+
+        if (pcs[pcId - 1].status == "In Use") {
+            cout << "PC is already in use, please choose another PC." << endl;
+            continue;
+        }
+
+
+        // Username handling and validation
+        if (accounts.empty()) {
+            cout << "No accounts found, please register an account first." << endl;
+            return;
+        }
+
+        cout << "Choose Account: " << endl;
+        for (int i = 0; i < accounts.size(); i++) {
+            cout << i + 1 << ". " << accounts[i].username << endl;
+        }
+        cin >> aChoiceStr;
+
+        try {
+            accountChoice = stoi(aChoiceStr);
+            if (accountChoice < 1 || accountChoice > accounts.size()) {
+                cout << "Please Choose a Valid Account." << endl;
+                continue;
+            }
+        } catch (const invalid_argument&) {
+            cout << "Please Enter a Valid Account Choice." << endl;
+            continue;
+        }
+
+        userName = accounts[accountChoice - 1].username;
+        
+
+        // Session time handling and validation
+        cout << "Enter session time in minutes: ";
+        cin >> minsStr;
+
+        try {
+            mins = stoi(minsStr);
+            if (mins <= 0) {
+                cout << "Session time must be greater than 0 minutes." << endl;
+                continue;
+            }
+        } catch (const invalid_argument&) {
+            cout << "Please Enter a Valid Session Time." << endl;
+            continue;
+        }
+
+        
+        cout << "+====== Detail Confirmation ======+" << endl;
+        cout << "PC ID: " << pcId << endl;
+        cout << "User: " << userName << endl;
+        cout << "Session Time: " << mins << " minutes" << endl;
+        cout << "+=============================+\n\n";
+
+        cout << "Confirm details? (Yes/No): ";
+        cin >> finalConfirm;
+        for (int i = 0; i < finalConfirm.length(); i++) {
+                finalConfirm[i] = tolower(finalConfirm[i]);
+            }
+
+        if (finalConfirm == "yes") {
+            pcs[pcId - 1].status = "In Use";
+            pcs[pcId - 1].currentUser = userName;
+            pcs[pcId - 1].minutesLeft = mins;
+        } else if (finalConfirm == "no") {
+            cout << "Cancelled Session." << endl;
+            continue;
+        } else {
+            cout << "Please type Yes or No." << endl;
+            continue;
+        }
+
+        // Continue or Exitting of Adding a Session
+        cout << "Session opened successfully for PC " << pcId << " with user " << userName << endl;
+        cout << "Add more or Retry Session? (Yes/Exit): ";
+        cin >> contSession;
+        while (true) {
+            for (int i = 0; i < contSession.length(); i++) {
+                contSession[i] = tolower(contSession[i]);
+            }
+
+            if (contSession == "yes") {
+                break;
+            } else if (contSession == "exit") {
+                return;
+            } else {
+                cout << "Invalid input. Please type Yes to continue or Exit to return to the main menu: ";
+                cin >> contSession;
+            }
+        }
+
+    }
+
+}

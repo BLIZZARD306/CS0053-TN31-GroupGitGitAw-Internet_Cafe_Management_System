@@ -11,6 +11,11 @@ struct account
     string pin;
 };
 
+void displayDashboard(const vector<pcStation>& pcs);
+//void displayAccounts(const vector<account>& accounts);
+//void registerAccount(vector<account>& accounts);
+//void extendTime(vector<pcStation>& pcs);
+
 int main()
 {
     vector<pcStation> pcs = {
@@ -27,9 +32,9 @@ int main()
         cout << left << setfill('=') << setw(40) << "" << endl;
         cout << left << "INTERNET CAFE MANAGEMENT SYSTEM" << endl;
         cout << setw(40) << "" << endl;
-
-        //Calling the pcDashboard here later on
-
+        
+        displayDashboard(pcs);
+        
         cout << "[1] Open PC Session\n";
         cout << "[2] Extend PC Time\n";
         cout << "[3] End PC Session\n";
@@ -39,14 +44,47 @@ int main()
         cout << "Enter your choice: ";
         cin >> choice;
 
-        /*
-        Switch(){
-
+        switch (choice) {
+            case 1:
+                //openPCSession(pcs, accounts);
+                break;
+            case 2:
+                //extendTime(pcs);
+                break;
+            case 3:
+                //endSession(pcs);
+                break;
+            case 4:
+                //registerAccount(accounts);
+                break;
+            case 5:
+                //displayAccounts(accounts);
+                break;
+            case 0:
+                cout << "Exiting Cafe Manager. Goodbye!\n";
+                break;
+            default:
+                cout << "Invalid choice. Please try again.\n";
         }
-        */
 
     }while(choice != 0);
 
     return 0;
 }
 
+void displayDashboard(const vector<pcStation>& pcs){
+    cout << "\n--- PC STATIONS STATUS ---\n";
+    cout << left << setw(8) << setfill(' ')<< "PC ID" << setw(14) << "Status" << setw(18) << "Current User" << "Time Left\n";
+    cout << "-------------------------------------------------\n";
+    for (const auto& pc : pcs) {
+        cout << "PC " << left << setw(5) << pc.id 
+             << setw(14) << pc.status 
+             << setw(18) << pc.currentUser;
+        if (pc.status == "In Use") {
+            cout << pc.minutesLeft << " mins\n";
+        } else {
+            cout << "-\n";
+        }
+    }
+     cout << "-------------------------------------------------\n";
+}

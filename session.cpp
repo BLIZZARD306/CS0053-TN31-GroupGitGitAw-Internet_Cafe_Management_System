@@ -18,7 +18,7 @@ void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts) {
         try {
             pcId = stoi(pcIdStr);
 
-            if (pcId < 1 || pcId > 4) {
+            if (pcId < 1 || pcId > pcs.size()) {
                 cout << "Invalid PC ID. Please choose between 1 and 4." << endl;
                 continue;
             }
@@ -121,4 +121,82 @@ void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts) {
 
     }
 
+}
+
+void endSession(vector<pcStation>& pcs) {
+    int pcId;
+    string pcIdStr, contSession, confirmEnd;
+
+    while(true) {
+        cout << "+====== End PC Session ======+" << endl;
+        
+        // PC list display
+        for(int i = 0; i < pcs.size(); i++) {
+            cout << "PC " << pcs[i].id << ": " << pcs[i].status;
+            if (pcs[i].status == "In Use") {
+                cout << " (User: " << pcs[i].currentUser << ", Time Left: " << pcs[i].minutesLeft << " mins)";
+            }
+            cout << endl;
+        }
+
+        // Session ending process
+        cout << "Enter PC ID to end session (1-4): ";
+        cin >> pcIdStr;
+
+        try {
+            pcId = stoi(pcIdStr);
+
+            if (pcId < 1 || pcId > pcs.size()) {
+                cout << "Invalid PC ID. Please choose between 1 and 4." << endl;
+                continue;
+            }
+
+        } catch (const invalid_argument&) {
+            cout << "Please Enter a Valid PC ID." << endl;
+            continue;
+        }
+
+        if (pcs[pcId - 1].status == "Available") {
+            cout << "PC is not in use, please choose another PC." << endl;
+            continue;
+        }
+
+        // Confirming the end of session
+        cout << "Are you sure you want to end the session for PC " << pcId << "? (Yes/No): ";
+        cin >> confirmEnd;
+        for (int i = 0; i < confirmEnd.length(); i++) {
+            confirmEnd[i] = tolower(confirmEnd[i]);
+        }
+        
+        if (confirmEnd == "yes") {
+            pcs[pcId - 1].status = "Available";
+            pcs[pcId - 1].currentUser = "";
+            pcs[pcId - 1].minutesLeft = 0;
+        } else if (confirmEnd == "no") {
+            cout << "Cancelled Ending Session." << endl;
+            continue;
+        } else {
+            cout << "Please type Yes or No." << endl;
+            continue;
+        }
+
+        cout << "Session ended successfully for PC " << pcId << ".\n" << endl;
+
+        cout << "End another session? (Yes/Exit): ";
+        cin >> contSession;
+        while (true) {
+            for (int i = 0; i < contSession.length(); i++) {
+                contSession[i] = tolower(contSession[i]);
+            }
+
+            if (contSession == "yes") {
+                break;
+            } else if (contSession == "exit") {
+                return;
+            } else {
+                cout << "Invalid input. Please type Yes to continue or Exit to return to the main menu: ";
+                cin >> contSession;
+            }
+        }
+    }
 }

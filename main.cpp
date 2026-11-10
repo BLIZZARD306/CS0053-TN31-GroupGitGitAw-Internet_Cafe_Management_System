@@ -46,7 +46,7 @@ int main()
 
         switch (choice) {
             case 1:
-                //openPCSession(pcs, accounts);
+                openPCSession(pcs, accounts);
                 break;
             case 2:
                 //extendTime(pcs);

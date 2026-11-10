@@ -3,6 +3,8 @@
 #include <string>
 #include <stdexcept>
 #include "session.h"
+// Add #include "[header_file].h" for account header
+
 using namespace std;
 
 void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts) {
@@ -82,26 +84,29 @@ void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts) {
         cout << "Session Time: " << mins << " minutes" << endl;
         cout << "+=============================+\n\n";
 
-        cout << "Confirm details? (Yes/No): ";
-        cin >> finalConfirm;
-        for (int i = 0; i < finalConfirm.length(); i++) {
+        while (true) {
+            cout << "Confirm details? (Yes/No): ";
+            cin >> finalConfirm;
+            for (int i = 0; i < finalConfirm.length(); i++) {
                 finalConfirm[i] = tolower(finalConfirm[i]);
             }
 
-        if (finalConfirm == "yes") {
-            pcs[pcId - 1].status = "In Use";
-            pcs[pcId - 1].currentUser = userName;
-            pcs[pcId - 1].minutesLeft = mins;
-        } else if (finalConfirm == "no") {
-            cout << "Cancelled Session." << endl;
-            continue;
-        } else {
-            cout << "Please type Yes or No." << endl;
-            continue;
+            if (finalConfirm == "yes") {
+                pcs[pcId - 1].status = "In Use";
+                pcs[pcId - 1].currentUser = userName;
+                pcs[pcId - 1].minutesLeft = mins;
+                cout << "Session opened successfully for PC " << pcId << " with user " << userName << endl;
+                break;
+            } else if (finalConfirm == "no") {
+                cout << "Cancelled Session." << endl;
+                break;
+            } else {
+                cout << "Please type Yes or No." << endl;
+                continue;
+            }
         }
 
         // Continue or Exitting of Adding a Session
-        cout << "Session opened successfully for PC " << pcId << " with user " << userName << endl;
         cout << "Add more or Retry Session? (Yes/Exit): ";
         cin >> contSession;
         while (true) {

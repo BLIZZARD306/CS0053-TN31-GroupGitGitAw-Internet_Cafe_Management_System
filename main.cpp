@@ -52,7 +52,7 @@ int main()
                 //extendTime(pcs);
                 break;
             case 3:
-                //endSession(pcs);
+                endSession(pcs);
                 break;
             case 4:
                 //registerAccount(accounts);

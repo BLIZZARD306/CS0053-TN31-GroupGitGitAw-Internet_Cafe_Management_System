@@ -2,18 +2,11 @@
 #include <iomanip>
 #include <vector>
 #include "session.h"
+#include "account.h"
 
 using namespace std;
 
-struct account
-{
-    string username;
-    string pin;
-};
-
 void displayDashboard(const vector<pcStation>& pcs);
-//void displayAccounts(const vector<account>& accounts);
-//void registerAccount(vector<account>& accounts);
 //void extendTime(vector<pcStation>& pcs);
 
 int main()
@@ -25,6 +18,7 @@ int main()
         {4, "Available", "None", 0}};
 
     vector<account> accounts;
+    loadAccounts(accounts);
     
     int choice = 0;
     do{
@@ -42,7 +36,14 @@ int main()
         cout << "[5] View All Accounts\n";
         cout << "[0] Exit\n";
         cout << "Enter your choice: ";
-        cin >> choice;
+
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Invalid choice. Please enter a number.\n";
+            choice = -1;
+            continue;
+        }
 
         switch (choice) {
             case 1:
@@ -55,10 +56,10 @@ int main()
                 endSession(pcs);
                 break;
             case 4:
-                //registerAccount(accounts);
+                registerAccount(accounts);
                 break;
             case 5:
-                //displayAccounts(accounts);
+                displayAccounts(accounts);
                 break;
             case 0:
                 cout << "Exiting Cafe Manager. Goodbye!\n";

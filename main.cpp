@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include "session.h"
 
 using namespace std;
 
@@ -10,21 +11,10 @@ struct account
     string pin;
 };
 
-struct pcStation
-{
-    int id;
-    string status;
-    string currentUser;
-    int minutesLeft;
-};
-
 void displayDashboard(const vector<pcStation>& pcs);
 //void displayAccounts(const vector<account>& accounts);
 //void registerAccount(vector<account>& accounts);
-//void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts);
 //void extendTime(vector<pcStation>& pcs);
-//void endSession(vector<pcStation>& pcs);
-
 
 int main()
 {
@@ -56,13 +46,13 @@ int main()
 
         switch (choice) {
             case 1:
-                //openPCSession(pcs, accounts);
+                openPCSession(pcs, accounts);
                 break;
             case 2:
                 //extendTime(pcs);
                 break;
             case 3:
-                //endSession(pcs);
+                endSession(pcs);
                 break;
             case 4:
                 //registerAccount(accounts);

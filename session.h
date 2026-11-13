@@ -4,16 +4,17 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "account.h"
 
 struct pcStation
 {
     int id;
-    string status;
-    string currentUser;
+    std::string status;
+    std::string currentUser;
     int minutesLeft;
 };
 
-void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts);
-void endSession(vector<pcStation>& pcs);
+void openPCSession(std::vector<pcStation>& pcs, const std::vector<account>& accounts);
+void endSession(std::vector<pcStation>& pcs);
 
 #endif

@@ -7,17 +7,77 @@
 
 using namespace std;
 
+bool accInUseCheck(const vector<pcStation>& pcs, const string& username) {
+    for (const auto& pc : pcs) {
+        if (pc.status == "In Use" && pc.currentUser == username) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool endSessionCheck(const vector<pcStation>& pcs) {
+    for (const auto& pc : pcs) {
+        if (pc.status == "In Use") {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool openPCSessionCheck(const vector<pcStation>& pcs) {
+    for (const auto& pc : pcs) {
+        if (pc.status == "Available") {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool availableAccountCheck(const vector<pcStation>& pcs, const vector<account>& accounts) {
+    for (const auto& acc : accounts) {
+        if (!accInUseCheck(pcs, acc.username)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
 void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts) {
     int pcId, mins = 0, accountChoice;
     string pcIdStr, userName, aChoiceStr, minsStr, contSession, finalConfirm;
 
     while (true) {
         // ID handling and validation
-        cout << "+====== Open PC Session ======+" << endl;
-        cout << "Enter PC ID to open session (1-4): ";
+        cout << "\n+====== Open PC Session ======+" << endl;
+        
+        if (!openPCSessionCheck(pcs)) {
+            cout << "No available PCs to open a session.\n" << endl;
+            return;
+        }
+
+        if (accounts.empty()) {
+            cout << "No accounts found, please register an account first.\n" << endl;
+            return;
+        }
+
+        if (!availableAccountCheck(pcs, accounts)) {
+            cout << "All registered accounts are currently in use. Please end a session first.\n" << endl;
+            return;
+        }
+
+        
+        cout << "Enter PC ID to open session (1-4 or exit): ";
         cin >> pcIdStr;
 
         try {
+            if (pcIdStr == "exit" || pcIdStr == "Exit") {
+                return;
+            }
+
             pcId = stoi(pcIdStr);
 
             if (pcId < 1 || pcId > pcs.size()) {
@@ -38,22 +98,34 @@ void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts) {
 
         // Username handling and validation
         if (accounts.empty()) {
-            cout << "No accounts found, please register an account first." << endl;
+            cout << "No accounts found, please register an account first.\n" << endl;
             return;
         }
 
-        cout << "Choose Account: " << endl;
+        cout << "Existing Accounts:" << endl;
         for (int i = 0; i < accounts.size(); i++) {
             cout << i + 1 << ". " << accounts[i].username << endl;
         }
+
+        cout << "\nChoose an account (Enter number or exit): ";
         cin >> aChoiceStr;
 
         try {
+            if (aChoiceStr == "exit" || aChoiceStr == "Exit") {
+                return;
+            }
+
             accountChoice = stoi(aChoiceStr);
             if (accountChoice < 1 || accountChoice > accounts.size()) {
                 cout << "Please Choose a Valid Account." << endl;
                 continue;
             }
+
+            if (accounts[accountChoice - 1].username.empty()) {
+                cout << "Selected account is invalid. Please choose a valid account." << endl;
+                continue; 
+            }
+            
         } catch (const invalid_argument&) {
             cout << "Please Enter a Valid Account Choice." << endl;
             continue;
@@ -61,6 +133,10 @@ void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts) {
 
         userName = accounts[accountChoice - 1].username;
         
+        if (accInUseCheck(pcs, userName)) {
+            cout << "Please choose another account." << endl;
+            continue;
+        }
 
         // Session time handling and validation
         cout << "Enter session time in minutes: ";
@@ -78,7 +154,7 @@ void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts) {
         }
 
         
-        cout << "+====== Detail Confirmation ======+" << endl;
+        cout << "\n+====== Detail Confirmation ======+" << endl;
         cout << "PC ID: " << pcId << endl;
         cout << "User: " << userName << endl;
         cout << "Session Time: " << mins << " minutes" << endl;
@@ -95,7 +171,7 @@ void openPCSession(vector<pcStation>& pcs, const vector<account>& accounts) {
                 pcs[pcId - 1].status = "In Use";
                 pcs[pcId - 1].currentUser = userName;
                 pcs[pcId - 1].minutesLeft = mins;
-                cout << "Session opened successfully for PC " << pcId << " with user " << userName << endl;
+                cout << "Session opened successfully for PC " << pcId << " with user " << userName << "\n" << endl;
                 break;
             } else if (finalConfirm == "no") {
                 cout << "Cancelled Session." << endl;
@@ -133,8 +209,13 @@ void endSession(vector<pcStation>& pcs) {
     string pcIdStr, contSession, confirmEnd;
 
     while(true) {
-        cout << "+====== End PC Session ======+" << endl;
+        cout << "\n+====== End PC Session ======+" << endl;
         
+        if (!endSessionCheck(pcs)) {
+            cout << "No active sessions to end.\n" << endl;
+            return;
+        }
+
         // PC list display
         for(int i = 0; i < pcs.size(); i++) {
             cout << "PC " << pcs[i].id << ": " << pcs[i].status;
@@ -145,10 +226,14 @@ void endSession(vector<pcStation>& pcs) {
         }
 
         // Session ending process
-        cout << "Enter PC ID to end session (1-4): ";
+        cout << "Enter PC ID to end session (1-4 or exit): ";
         cin >> pcIdStr;
 
         try {
+            if (pcIdStr == "exit" || pcIdStr == "Exit") {
+                return;
+            }
+
             pcId = stoi(pcIdStr);
 
             if (pcId < 1 || pcId > pcs.size()) {

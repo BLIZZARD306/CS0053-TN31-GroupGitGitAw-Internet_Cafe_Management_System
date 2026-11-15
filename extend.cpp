@@ -11,7 +11,7 @@ void extendTime(vector<pcStation>& pcs) {
     string pcIdStr, minsStr, confirmExtend, contSession;
 
     while (true) {
-        cout << "+===== Extend PC Time =====+" << endl;
+        cout << "\n+===== Extend PC Time =====+" << endl;
         
         // Only shows what PCs can be extended
         bool anyInUse = false;
@@ -23,24 +23,24 @@ void extendTime(vector<pcStation>& pcs) {
             }
         }
         if (!anyInUse) {
-            cout << "No PCs are in use currently" << endl;
+            cout << "No PCs are in use currently\n" << endl;
             return;
         }
 
         // Validates the PC ID
-        cout << "Enter PC ID to extend (1-4, or 0 to cancel): ";
+        cout << "\nEnter PC ID to extend (1-4, or 0 to cancel): ";
         cin >> pcIdStr;
 
         try {
             pcId = stoi(pcIdStr);
 
             if (pcId == 0) {
-                cout << "Cancelled extending time." << endl;
+                cout << "Cancelled extending time.\n" << endl;
                 return;
             }
 
             if (pcId < 1 || pcId > pcs.size()) {
-                cout << "The PC ID is invalid" << endl;
+                cout << "The PC ID is invalid." << endl;
                 continue;
             }
         } catch (const exception&) {
@@ -71,7 +71,7 @@ void extendTime(vector<pcStation>& pcs) {
 
         // Confirms the time added, then the time gets extended
         while (true) {
-            cout << "Add " << extraMins << " minutes to PC " << pcId << "? (Yes/No): ";
+            cout << "\nAdd " << extraMins << " minutes to PC " << pcId << "? (Yes/No): ";
             cin >> confirmExtend;
             for (int i = 0; i < confirmExtend.length(); i++) {
                 confirmExtend[i] = tolower(confirmExtend[i]);
@@ -82,7 +82,7 @@ void extendTime(vector<pcStation>& pcs) {
                 cout << "PC " << pcId << " now has " << pcs[pcId - 1].minutesLeft << " mins left.\n" << endl;
                 break;
             } else if (confirmExtend == "no") {
-                cout << "Cancelled extending time." << endl;
+                cout << "Cancelled extending time.\n" << endl;
                 break;
             } else {
                 cout << "Please type Yes or No only." << endl;
@@ -101,6 +101,7 @@ void extendTime(vector<pcStation>& pcs) {
             if (contSession == "yes") {
                 break;
             } else if (contSession == "exit") {
+                cout << endl;
                 return;
             } else {
                 cout << "Invalid input. Please type Yes to continue or Exit to return to the main menu: ";

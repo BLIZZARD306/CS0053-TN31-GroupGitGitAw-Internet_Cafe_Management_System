@@ -28,11 +28,16 @@ void extendTime(vector<pcStation>& pcs) {
         }
 
         // Validates the PC ID
-        cout << "Enter PC ID to extend (1-4): ";
+        cout << "Enter PC ID to extend (1-4, or 0 to cancel): ";
         cin >> pcIdStr;
 
         try {
             pcId = stoi(pcIdStr);
+
+            if (pcId == 0) {
+                cout << "Cancelled extending time." << endl;
+                return;
+            }
 
             if (pcId < 1 || pcId > pcs.size()) {
                 cout << "The PC ID is invalid" << endl;

@@ -8,7 +8,7 @@ using namespace std;
 
 void extendTime(vector<pcStation>& pcs) {
     int pcId, extraMins;
-    string pcIdStr, minsStr, confirmExtend;
+    string pcIdStr, minsStr, confirmExtend, contSession;
 
     while (true) {
         cout << "+===== Extend PC Time =====+" << endl;
@@ -65,22 +65,42 @@ void extendTime(vector<pcStation>& pcs) {
         }
 
         // Confirms the time added, then the time gets extended
-        cout << "Add " << extraMins << " minutes to PC " << pcId << "? (Yes/No): ";
-        cin >> confirmExtend;
-        for (int i = 0; i < confirmExtend.length(); i++) {
-            confirmExtend[i] = tolower(confirmExtend[i]);
-        }
-        // Time extension computation (if yes), cancellation (if no), and incorrect input validation
-        if (confirmExtend == "yes") {
-            pcs[pcId - 1].minutesLeft += extraMins;
-            cout << "PC " << pcId << " now has " << pcs[pcId - 1].minutesLeft << " mins left.\n" << endl;
-        } else if (confirmExtend == "no") {
-            cout << "Cancelled extending time." << endl;
-        } else {
-            cout << "Please type Yes or No only." << endl;
-            continue;
+        while (true) {
+            cout << "Add " << extraMins << " minutes to PC " << pcId << "? (Yes/No): ";
+            cin >> confirmExtend;
+            for (int i = 0; i < confirmExtend.length(); i++) {
+                confirmExtend[i] = tolower(confirmExtend[i]);
+            }
+
+            if (confirmExtend == "yes") {
+                pcs[pcId - 1].minutesLeft += extraMins;
+                cout << "PC " << pcId << " now has " << pcs[pcId - 1].minutesLeft << " mins left.\n" << endl;
+                break;
+            } else if (confirmExtend == "no") {
+                cout << "Cancelled extending time." << endl;
+                break;
+            } else {
+                cout << "Please type Yes or No only." << endl;
+            }
         }
 
-        return; // NOTE: TEMPORARY ONLY! Will be removed in the next commit :)
+        // Extends another PC or goes back to the menu
+        cout << "Extend another PC? (Yes/Exit): ";
+        cin >> contSession;
+
+        while (true) {
+            for (int i = 0; i < contSession.length(); i++) {
+                contSession[i] = tolower(contSession[i]);
+            }
+
+            if (contSession == "yes") {
+                break;
+            } else if (contSession == "exit") {
+                return;
+            } else {
+                cout << "Invalid input. Please type Yes to continue or Exit to return to the main menu: ";
+                cin >> contSession;
+            }
+        }
     }
 }

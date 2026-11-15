@@ -2,12 +2,12 @@
 #include <iomanip>
 #include <vector>
 #include "session.h"
+#include "extend.h"
 #include "account.h"
 
 using namespace std;
 
 void displayDashboard(const vector<pcStation>& pcs);
-//void extendTime(vector<pcStation>& pcs);
 
 int main()
 {
@@ -50,7 +50,7 @@ int main()
                 openPCSession(pcs, accounts);
                 break;
             case 2:
-                //extendTime(pcs);
+                extendTime(pcs);
                 break;
             case 3:
                 endSession(pcs);

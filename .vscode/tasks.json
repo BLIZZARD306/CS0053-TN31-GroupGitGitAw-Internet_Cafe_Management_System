@@ -6,10 +6,11 @@
             "command": "C:/msys64/ucrt64/bin/g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
+                "-static",
                 "-g",
-                "${file}",
+                "${workspaceFolder}/*.cpp",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${workspaceFolder}\\cafe_manager.exe"
             ],
             "options": {
                 "cwd": "C:/msys64/ucrt64/bin"

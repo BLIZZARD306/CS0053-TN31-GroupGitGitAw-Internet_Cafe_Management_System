@@ -19,5 +19,6 @@ void endSession(std::vector<pcStation>& pcs);
 bool accInUseCheck(const std::vector<pcStation>& pcs, const std::string& username);
 bool endSessionCheck(const std::vector<pcStation>& pcs);
 bool openPCSessionCheck(const std::vector<pcStation>& pcs);
+bool availableAccountCheck(const std::vector<pcStation>& pcs, const std::vector<account>& accounts);
 
 #endif
